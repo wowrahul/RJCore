@@ -8,15 +8,27 @@
 import XCTest
 @testable import RJCore
 
+class NetworkSessionMock: NetworkSession {
+    var data: Data?
+    var error: Error?
+    
+    func get(from url: URL, completionHandler: @escaping (Data?, Error?) -> Void) {
+        completionHandler(data, error)
+    }
+}
+
+
 final class RJCoreNetworkingTests: XCTestCase {
 
     func loadDataCall() {
         let manager = RJCore.Networking.Manager()
-        let expectation = XCTestExpectation(description: "Called for Data")
+        let session = NetworkSessionMock()
+        manager.urlSession = session
         
-        guard let url = URL(string: "https://google.com") else {
-            return XCTFail("Could not create URL")
-        }
+        let expectation = XCTestExpectation(description: "Called for Data")
+        let data = Data([0,1,0,1])
+        session.data = data
+        let url = URL(fileURLWithPath: "url")
         
         manager.loadData(from: url) { result in
             expectation.fulfill()

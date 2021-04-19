@@ -7,6 +7,18 @@
 
 import Foundation
 
+protocol NetworkSession {
+    func get(from url:URL, completionHandler: @escaping (Data?, Error?) -> Void)
+}
+
+extension URLSession: NetworkSession {
+    func get(from url: URL, completionHandler: @escaping (Data?, Error?) -> Void) {
+        let task = dataTask(with: url) { data, _, error in
+            completionHandler(data, error)
+        }
+        task.resume()
+    }
+}
 extension RJCore {
     public class Networking {
         /// Responsible for handling all networking calls
@@ -14,14 +26,17 @@ extension RJCore {
         public class Manager {
             public init() { }
             
-            private let urlSession = URLSession.shared
+            internal var urlSession: NetworkSession = URLSession.shared
             
+            /// Fetches data from the provided url
+            /// - Parameters:
+            ///   - url: The location you wish to fetch data from
+            ///   - completionHandler: Returns a result object 
             public func loadData(from url: URL, completionHandler: @escaping (NetworkResult<Data>) -> Void) {
-                let task = urlSession.dataTask(with: url) { (data, response, error) in
+                urlSession.get(from: url) { (data, error) in
                     let result = data.map(NetworkResult<Data>.success) ?? .failure(error)
                     completionHandler(result)
                 }
-                task.resume()
             }
         }
         
