@@ -13,7 +13,13 @@ final class RJCoreTests: XCTestCase {
         let color = RJCore.colorFromHexString("FF0000")
         XCTAssertEqual(color, .red)
     }
+    
+    func testRJCoreColorsAreEqual() {
+        let color = RJCore.colorFromHexString("D3D3D3")
+        XCTAssertEqual(color, RJCore.lightGray)
+    }
     static var allTests = [
         ("testColorRedEqual", testColorRedEqual),
+        ("testRJCoreColorAreEqual", testRJCoreColorsAreEqual)
     ]
 }

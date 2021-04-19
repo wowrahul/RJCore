@@ -1,7 +1,6 @@
 import UIKit
 
-class RJCore {
-    
+public class RJCore {
     
     /// <#Description#>
     ///  - Warning: if submitted, the '#' will be removed
@@ -9,7 +8,7 @@ class RJCore {
     ///   - hexString: A 6-digit HexaDecimal String
     ///   - alpha: A number between 0 and 1 indicating transparency
     /// - Returns: A UIColor defined by the hexString
-    class func colorFromHexString(_ hexString: String, alpha: CGFloat = 1.0) -> UIColor {
+    internal class func colorFromHexString(_ hexString: String, alpha: CGFloat = 1.0) -> UIColor {
         let r, g, b: CGFloat
         let offset = hexString.hasPrefix("#") ? 1 : 0
         let start = hexString.index(hexString.startIndex, offsetBy: offset)
@@ -23,5 +22,10 @@ class RJCore {
             return UIColor(red: r, green: g, blue: b, alpha: alpha)
         }
         return UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+    }
+    
+    /// Light gray color from Hex String - D3D3D3
+    public static var lightGray: UIColor {
+        return colorFromHexString("D3D3D3")
     }
 }
