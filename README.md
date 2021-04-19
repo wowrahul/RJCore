@@ -1,2 +1,3 @@
 # RJCore
-A reusable framework to share common iOS code
+
+A description of this package.
